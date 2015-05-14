@@ -111,7 +111,7 @@ static void XYZAFNetworkReachabilityReleaseCallback(const void *info) {
         struct sockaddr_in address;
         bzero(&address, sizeof(address));
         address.sin_len = sizeof(address);
-        address.sin_family = XYZAF_INET;
+        address.sin_family = AF_INET;
 
         _sharedManager = [self managerForAddress:&address];
     });
