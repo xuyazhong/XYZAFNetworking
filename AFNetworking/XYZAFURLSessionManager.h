@@ -1,6 +1,6 @@
-// AFURLSessionManager.h
+// XYZAFURLSessionManager.h
 //
-// Copyright (c) 2013-2015 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013-2015 XYZAFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AFURLResponseSerialization.h"
-#import "AFURLRequestSerialization.h"
-#import "AFSecurityPolicy.h"
-#import "AFNetworkReachabilityManager.h"
+#import "XYZAFURLResponseSerialization.h"
+#import "XYZAFURLRequestSerialization.h"
+#import "XYZAFSecurityPolicy.h"
+#import "XYZAFNetworkReachabilityManager.h"
 
 #ifndef NS_DESIGNATED_INITIALIZER
 #if __has_attribute(objc_designated_initializer)
@@ -36,15 +36,15 @@
 #endif
 
 /**
- `AFURLSessionManager` creates and manages an `NSURLSession` object based on a specified `NSURLSessionConfiguration` object, which conforms to `<NSURLSessionTaskDelegate>`, `<NSURLSessionDataDelegate>`, `<NSURLSessionDownloadDelegate>`, and `<NSURLSessionDelegate>`.
+ `XYZAFURLSessionManager` creates and manages an `NSURLSession` object based on a specified `NSURLSessionConfiguration` object, which conforms to `<NSURLSessionTaskDelegate>`, `<NSURLSessionDataDelegate>`, `<NSURLSessionDownloadDelegate>`, and `<NSURLSessionDelegate>`.
 
  ## Subclassing Notes
 
- This is the base class for `AFHTTPSessionManager`, which adds functionality specific to making HTTP requests. If you are looking to extend `AFURLSessionManager` specifically for HTTP, consider subclassing `AFHTTPSessionManager` instead.
+ This is the base class for `XYZAFHTTPSessionManager`, which adds functionality specific to making HTTP requests. If you are looking to extend `XYZAFURLSessionManager` specifically for HTTP, consider subclassing `XYZAFHTTPSessionManager` instead.
 
  ## NSURLSession & NSURLSessionTask Delegate Methods
 
- `AFURLSessionManager` implements the following delegate methods:
+ `XYZAFURLSessionManager` implements the following delegate methods:
 
  ### `NSURLSessionDelegate`
 
@@ -76,7 +76,7 @@
 
  ## Network Reachability Monitoring
 
- Network reachability status and change monitoring is available through the `reachabilityManager` property. Applications may choose to monitor network reachability conditions in order to prevent or suspend any outbound requests. See `AFNetworkReachabilityManager` for more details.
+ Network reachability status and change monitoring is available through the `reachabilityManager` property. Applications may choose to monitor network reachability conditions in order to prevent or suspend any outbound requests. See `XYZAFNetworkReachabilityManager` for more details.
 
  ## NSCoding Caveats
 
@@ -92,7 +92,7 @@
 
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
 
-@interface AFURLSessionManager : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate, NSSecureCoding, NSCopying>
+@interface XYZAFURLSessionManager : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate, NSSecureCoding, NSCopying>
 
 /**
  The managed session.
@@ -105,29 +105,29 @@
 @property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
 
 /**
- Responses sent from the server in data tasks created with `dataTaskWithRequest:success:failure:` and run using the `GET` / `POST` / et al. convenience methods are automatically validated and serialized by the response serializer. By default, this property is set to an instance of `AFJSONResponseSerializer`.
+ Responses sent from the server in data tasks created with `dataTaskWithRequest:success:failure:` and run using the `GET` / `POST` / et al. convenience methods are automatically validated and serialized by the response serializer. By default, this property is set to an instance of `XYZAFJSONResponseSerializer`.
 
  @warning `responseSerializer` must not be `nil`.
  */
-@property (nonatomic, strong) id <AFURLResponseSerialization> responseSerializer;
+@property (nonatomic, strong) id <XYZAFURLResponseSerialization> responseSerializer;
 
 ///-------------------------------
 /// @name Managing Security Policy
 ///-------------------------------
 
 /**
- The security policy used by created request operations to evaluate server trust for secure connections. `AFURLSessionManager` uses the `defaultPolicy` unless otherwise specified.
+ The security policy used by created request operations to evaluate server trust for secure connections. `XYZAFURLSessionManager` uses the `defaultPolicy` unless otherwise specified.
  */
-@property (nonatomic, strong) AFSecurityPolicy *securityPolicy;
+@property (nonatomic, strong) XYZAFSecurityPolicy *securityPolicy;
 
 ///--------------------------------------
 /// @name Monitoring Network Reachability
 ///--------------------------------------
 
 /**
- The network reachability manager. `AFURLSessionManager` uses the `sharedManager` by default.
+ The network reachability manager. `XYZAFURLSessionManager` uses the `sharedManager` by default.
  */
-@property (readwrite, nonatomic, strong) AFNetworkReachabilityManager *reachabilityManager;
+@property (readwrite, nonatomic, strong) XYZAFNetworkReachabilityManager *reachabilityManager;
 
 ///----------------------------
 /// @name Getting Session Tasks
@@ -182,9 +182,9 @@
 /**
  Whether to attempt to retry creation of upload tasks for background sessions when initial call returns `nil`. `NO` by default.
 
- @bug As of iOS 7.0, there is a bug where upload tasks created for background tasks are sometimes `nil`. As a workaround, if this property is `YES`, AFNetworking will follow Apple's recommendation to try creating the task again.
+ @bug As of iOS 7.0, there is a bug where upload tasks created for background tasks are sometimes `nil`. As a workaround, if this property is `YES`, XYZAFNetworking will follow Apple's recommendation to try creating the task again.
 
- @see https://github.com/AFNetworking/AFNetworking/issues/1675
+ @see https://github.com/XYZAFNetworking/XYZAFNetworking/issues/1675
  */
 @property (nonatomic, assign) BOOL attemptsToRecreateUploadTasksForBackgroundSessions;
 
@@ -421,7 +421,7 @@
 /**
  Sets a block to be executed when a download task has completed a download, as handled by the `NSURLSessionDownloadDelegate` method `URLSession:downloadTask:didFinishDownloadingToURL:`.
 
- @param block A block object to be executed when a download task has completed. The block returns the URL the download should be moved to, and takes three arguments: the session, the download task, and the temporary location of the downloaded file. If the file manager encounters an error while attempting to move the temporary file to the destination, an `AFURLSessionDownloadTaskDidFailToMoveFileNotification` will be posted, with the download task as its object, and the user info of the error.
+ @param block A block object to be executed when a download task has completed. The block returns the URL the download should be moved to, and takes three arguments: the session, the download task, and the temporary location of the downloaded file. If the file manager encounters an error while attempting to move the temporary file to the destination, an `XYZAFURLSessionDownloadTaskDidFailToMoveFileNotification` will be posted, with the download task as its object, and the user info of the error.
  */
 - (void)setDownloadTaskDidFinishDownloadingBlock:(NSURL * (^)(NSURLSession *session, NSURLSessionDownloadTask *downloadTask, NSURL *location))block;
 
@@ -450,98 +450,98 @@
 /**
  Posted when a task begins executing.
 
- @deprecated Use `AFNetworkingTaskDidResumeNotification` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidResumeNotification` instead.
  */
-extern NSString * const AFNetworkingTaskDidStartNotification DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidStartNotification DEPRECATED_ATTRIBUTE;
 
 /**
  Posted when a task resumes.
  */
-extern NSString * const AFNetworkingTaskDidResumeNotification;
+extern NSString * const XYZAFNetworkingTaskDidResumeNotification;
 
 /**
  Posted when a task finishes executing. Includes a userInfo dictionary with additional information about the task.
 
- @deprecated Use `AFNetworkingTaskDidCompleteNotification` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteNotification` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishNotification DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishNotification DEPRECATED_ATTRIBUTE;
 
 /**
  Posted when a task finishes executing. Includes a userInfo dictionary with additional information about the task.
  */
-extern NSString * const AFNetworkingTaskDidCompleteNotification;
+extern NSString * const XYZAFNetworkingTaskDidCompleteNotification;
 
 /**
  Posted when a task suspends its execution.
  */
-extern NSString * const AFNetworkingTaskDidSuspendNotification;
+extern NSString * const XYZAFNetworkingTaskDidSuspendNotification;
 
 /**
  Posted when a session is invalidated.
  */
-extern NSString * const AFURLSessionDidInvalidateNotification;
+extern NSString * const XYZAFURLSessionDidInvalidateNotification;
 
 /**
  Posted when a session download task encountered an error when moving the temporary download file to a specified destination.
  */
-extern NSString * const AFURLSessionDownloadTaskDidFailToMoveFileNotification;
+extern NSString * const XYZAFURLSessionDownloadTaskDidFailToMoveFileNotification;
 
 /**
- The raw response data of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if response data exists for the task.
+ The raw response data of the task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if response data exists for the task.
 
- @deprecated Use `AFNetworkingTaskDidCompleteResponseDataKey` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteResponseDataKey` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishResponseDataKey DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishResponseDataKey DEPRECATED_ATTRIBUTE;
 
 /**
- The raw response data of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if response data exists for the task.
+ The raw response data of the task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if response data exists for the task.
  */
-extern NSString * const AFNetworkingTaskDidCompleteResponseDataKey;
+extern NSString * const XYZAFNetworkingTaskDidCompleteResponseDataKey;
 
 /**
- The serialized response object of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if the response was serialized.
+ The serialized response object of the task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if the response was serialized.
 
- @deprecated Use `AFNetworkingTaskDidCompleteSerializedResponseKey` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteSerializedResponseKey` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishSerializedResponseKey DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishSerializedResponseKey DEPRECATED_ATTRIBUTE;
 
 /**
- The serialized response object of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if the response was serialized.
+ The serialized response object of the task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if the response was serialized.
  */
-extern NSString * const AFNetworkingTaskDidCompleteSerializedResponseKey;
+extern NSString * const XYZAFNetworkingTaskDidCompleteSerializedResponseKey;
 
 /**
- The response serializer used to serialize the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if the task has an associated response serializer.
+ The response serializer used to serialize the response. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if the task has an associated response serializer.
 
- @deprecated Use `AFNetworkingTaskDidCompleteResponseSerializerKey` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteResponseSerializerKey` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishResponseSerializerKey DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishResponseSerializerKey DEPRECATED_ATTRIBUTE;
 
 /**
- The response serializer used to serialize the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if the task has an associated response serializer.
+ The response serializer used to serialize the response. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if the task has an associated response serializer.
  */
-extern NSString * const AFNetworkingTaskDidCompleteResponseSerializerKey;
+extern NSString * const XYZAFNetworkingTaskDidCompleteResponseSerializerKey;
 
 /**
- The file path associated with the download task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if an the response data has been stored directly to disk.
+ The file path associated with the download task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if an the response data has been stored directly to disk.
 
- @deprecated Use `AFNetworkingTaskDidCompleteAssetPathKey` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteAssetPathKey` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishAssetPathKey DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishAssetPathKey DEPRECATED_ATTRIBUTE;
 
 /**
- The file path associated with the download task. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if an the response data has been stored directly to disk.
+ The file path associated with the download task. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if an the response data has been stored directly to disk.
  */
-extern NSString * const AFNetworkingTaskDidCompleteAssetPathKey;
+extern NSString * const XYZAFNetworkingTaskDidCompleteAssetPathKey;
 
 /**
- Any error associated with the task, or the serialization of the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if an error exists.
+ Any error associated with the task, or the serialization of the response. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if an error exists.
 
- @deprecated Use `AFNetworkingTaskDidCompleteErrorKey` instead.
+ @deprecated Use `XYZAFNetworkingTaskDidCompleteErrorKey` instead.
  */
-extern NSString * const AFNetworkingTaskDidFinishErrorKey DEPRECATED_ATTRIBUTE;
+extern NSString * const XYZAFNetworkingTaskDidFinishErrorKey DEPRECATED_ATTRIBUTE;
 
 /**
- Any error associated with the task, or the serialization of the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidFinishNotification` if an error exists.
+ Any error associated with the task, or the serialization of the response. Included in the userInfo dictionary of the `XYZAFNetworkingTaskDidFinishNotification` if an error exists.
  */
-extern NSString * const AFNetworkingTaskDidCompleteErrorKey;
+extern NSString * const XYZAFNetworkingTaskDidCompleteErrorKey;

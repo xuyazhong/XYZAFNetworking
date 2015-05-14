@@ -1,6 +1,6 @@
-// AFHTTPSessionManager.m
+// XYZAFHTTPSessionManager.m
 //
-// Copyright (c) 2013-2015 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013-2015 XYZAFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFHTTPSessionManager.h"
+#import "XYZAFHTTPSessionManager.h"
 
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "XYZAFURLRequestSerialization.h"
+#import "XYZAFURLResponseSerialization.h"
 
 #import <Availability.h>
 #import <Security/Security.h>
@@ -42,11 +42,11 @@
 #import <UIKit/UIKit.h>
 #endif
 
-@interface AFHTTPSessionManager ()
+@interface XYZAFHTTPSessionManager ()
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
 @end
 
-@implementation AFHTTPSessionManager
+@implementation XYZAFHTTPSessionManager
 @dynamic responseSerializer;
 
 + (instancetype)manager {
@@ -80,8 +80,8 @@
 
     self.baseURL = url;
 
-    self.requestSerializer = [AFHTTPRequestSerializer serializer];
-    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.requestSerializer = [XYZAFHTTPRequestSerializer serializer];
+    self.responseSerializer = [XYZAFJSONResponseSerializer serializer];
 
     return self;
 }
@@ -91,13 +91,13 @@
 #ifdef _SYSTEMCONFIGURATION_H
 #endif
 
-- (void)setRequestSerializer:(AFHTTPRequestSerializer <AFURLRequestSerialization> *)requestSerializer {
+- (void)setRequestSerializer:(XYZAFHTTPRequestSerializer <XYZAFURLRequestSerialization> *)requestSerializer {
     NSParameterAssert(requestSerializer);
 
     _requestSerializer = requestSerializer;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
+- (void)setResponseSerializer:(XYZAFHTTPResponseSerializer <XYZAFURLResponseSerialization> *)responseSerializer {
     NSParameterAssert(responseSerializer);
 
     [super setResponseSerializer:responseSerializer];
@@ -147,7 +147,7 @@
 
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
                     parameters:(id)parameters
-     constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+     constructingBodyWithBlock:(void (^)(id <XYZAFMultipartFormData> formData))block
                        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
@@ -287,8 +287,8 @@
         return nil;
     }
 
-    self.requestSerializer = [decoder decodeObjectOfClass:[AFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
-    self.responseSerializer = [decoder decodeObjectOfClass:[AFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
+    self.requestSerializer = [decoder decodeObjectOfClass:[XYZAFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
+    self.responseSerializer = [decoder decodeObjectOfClass:[XYZAFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
 
     return self;
 }
@@ -309,7 +309,7 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    AFHTTPSessionManager *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL sessionConfiguration:self.session.configuration];
+    XYZAFHTTPSessionManager *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL sessionConfiguration:self.session.configuration];
 
     HTTPClient.requestSerializer = [self.requestSerializer copyWithZone:zone];
     HTTPClient.responseSerializer = [self.responseSerializer copyWithZone:zone];

@@ -1,6 +1,6 @@
-// AFHTTPRequestOperationManager.m
+// XYZAFHTTPRequestOperationManager.m
 //
-// Copyright (c) 2013-2015 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013-2015 XYZAFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AFHTTPRequestOperationManager.h"
-#import "AFHTTPRequestOperation.h"
+#import "XYZAFHTTPRequestOperationManager.h"
+#import "XYZAFHTTPRequestOperation.h"
 
 #import <Availability.h>
 #import <Security/Security.h>
@@ -32,11 +32,11 @@
 #import <UIKit/UIKit.h>
 #endif
 
-@interface AFHTTPRequestOperationManager ()
+@interface XYZAFHTTPRequestOperationManager ()
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
 @end
 
-@implementation AFHTTPRequestOperationManager
+@implementation XYZAFHTTPRequestOperationManager
 
 + (instancetype)manager {
     return [[self alloc] initWithBaseURL:nil];
@@ -59,12 +59,12 @@
 
     self.baseURL = url;
 
-    self.requestSerializer = [AFHTTPRequestSerializer serializer];
-    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.requestSerializer = [XYZAFHTTPRequestSerializer serializer];
+    self.responseSerializer = [XYZAFJSONResponseSerializer serializer];
 
-    self.securityPolicy = [AFSecurityPolicy defaultPolicy];
+    self.securityPolicy = [XYZAFSecurityPolicy defaultPolicy];
 
-    self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    self.reachabilityManager = [XYZAFNetworkReachabilityManager sharedManager];
 
     self.operationQueue = [[NSOperationQueue alloc] init];
 
@@ -78,13 +78,13 @@
 #ifdef _SYSTEMCONFIGURATION_H
 #endif
 
-- (void)setRequestSerializer:(AFHTTPRequestSerializer <AFURLRequestSerialization> *)requestSerializer {
+- (void)setRequestSerializer:(XYZAFHTTPRequestSerializer <XYZAFURLRequestSerialization> *)requestSerializer {
     NSParameterAssert(requestSerializer);
 
     _requestSerializer = requestSerializer;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
+- (void)setResponseSerializer:(XYZAFHTTPResponseSerializer <XYZAFURLResponseSerialization> *)responseSerializer {
     NSParameterAssert(responseSerializer);
 
     _responseSerializer = responseSerializer;
@@ -92,11 +92,11 @@
 
 #pragma mark -
 
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithHTTPMethod:(NSString *)method
+- (XYZAFHTTPRequestOperation *)HTTPRequestOperationWithHTTPMethod:(NSString *)method
                                                      URLString:(NSString *)URLString
                                                     parameters:(id)parameters
-                                                       success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                       failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                                                       success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                                                       failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
@@ -116,11 +116,11 @@
     return [self HTTPRequestOperationWithRequest:request success:success failure:failure];
 }
 
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
-                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+- (XYZAFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
+                                                    success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                                                    failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    XYZAFHTTPRequestOperation *operation = [[XYZAFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = self.responseSerializer;
     operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
     operation.credential = self.credential;
@@ -135,24 +135,24 @@
 
 #pragma mark -
 
-- (AFHTTPRequestOperation *)GET:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)GET:(NSString *)URLString
                      parameters:(id)parameters
-                        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                        success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                        failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"GET" URLString:URLString parameters:parameters success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"GET" URLString:URLString parameters:parameters success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
     return operation;
 }
 
-- (AFHTTPRequestOperation *)HEAD:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)HEAD:(NSString *)URLString
                       parameters:(id)parameters
-                         success:(void (^)(AFHTTPRequestOperation *operation))success
-                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                         success:(void (^)(XYZAFHTTPRequestOperation *operation))success
+                         failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"HEAD" URLString:URLString parameters:parameters success:^(AFHTTPRequestOperation *requestOperation, __unused id responseObject) {
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"HEAD" URLString:URLString parameters:parameters success:^(XYZAFHTTPRequestOperation *requestOperation, __unused id responseObject) {
         if (success) {
             success(requestOperation);
         }
@@ -163,23 +163,23 @@
     return operation;
 }
 
-- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)POST:(NSString *)URLString
                       parameters:(id)parameters
-                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                         success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"POST" URLString:URLString parameters:parameters success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"POST" URLString:URLString parameters:parameters success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
     return operation;
 }
 
-- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)POST:(NSString *)URLString
                       parameters:(id)parameters
-       constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
-                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+       constructingBodyWithBlock:(void (^)(id <XYZAFMultipartFormData> formData))block
+                         success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters constructingBodyWithBlock:block error:&serializationError];
@@ -196,43 +196,43 @@
         return nil;
     }
 
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
     return operation;
 }
 
-- (AFHTTPRequestOperation *)PUT:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)PUT:(NSString *)URLString
                      parameters:(id)parameters
-                        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                        success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                        failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"PUT" URLString:URLString parameters:parameters success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"PUT" URLString:URLString parameters:parameters success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
     return operation;
 }
 
-- (AFHTTPRequestOperation *)PATCH:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)PATCH:(NSString *)URLString
                        parameters:(id)parameters
-                          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                          success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                          failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"PATCH" URLString:URLString parameters:parameters success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"PATCH" URLString:URLString parameters:parameters success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
     return operation;
 }
 
-- (AFHTTPRequestOperation *)DELETE:(NSString *)URLString
+- (XYZAFHTTPRequestOperation *)DELETE:(NSString *)URLString
                         parameters:(id)parameters
-                           success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                           success:(void (^)(XYZAFHTTPRequestOperation *operation, id responseObject))success
+                           failure:(void (^)(XYZAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"DELETE" URLString:URLString parameters:parameters success:success failure:failure];
+    XYZAFHTTPRequestOperation *operation = [self HTTPRequestOperationWithHTTPMethod:@"DELETE" URLString:URLString parameters:parameters success:success failure:failure];
 
     [self.operationQueue addOperation:operation];
 
@@ -259,8 +259,8 @@
         return nil;
     }
 
-    self.requestSerializer = [decoder decodeObjectOfClass:[AFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
-    self.responseSerializer = [decoder decodeObjectOfClass:[AFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
+    self.requestSerializer = [decoder decodeObjectOfClass:[XYZAFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
+    self.responseSerializer = [decoder decodeObjectOfClass:[XYZAFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
 
     return self;
 }
@@ -274,7 +274,7 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    AFHTTPRequestOperationManager *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL];
+    XYZAFHTTPRequestOperationManager *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL];
 
     HTTPClient.requestSerializer = [self.requestSerializer copyWithZone:zone];
     HTTPClient.responseSerializer = [self.responseSerializer copyWithZone:zone];
